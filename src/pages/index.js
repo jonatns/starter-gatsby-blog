@@ -1,17 +1,20 @@
-import React from 'react'
-import get from 'lodash/get'
-import Helmet from 'react-helmet'
-import Hero from '../components/hero'
-import ArticlePreview from '../components/article-preview'
+import React from "react";
+import get from "lodash/get";
+import Helmet from "react-helmet";
+import Hero from "../components/hero";
+import ArticlePreview from "../components/article-preview";
 
 class RootIndex extends React.Component {
   render() {
-    const siteTitle = get(this, 'props.data.site.siteMetadata.title')
-    const posts = get(this, 'props.data.allContentfulBlogPost.edges')
-    const [author] = get(this, 'props.data.allContentfulPerson.edges')
+    const siteTitle = get(this, "props.data.site.siteMetadata.title");
+    const posts = get(this, "props.data.allContentfulBlogPost.edges");
+    const authors = get(this, "props.data.allContentfulPerson.edges");
+
+    const author = authors[1];
+    console.log(authors);
 
     return (
-      <div style={{ background: '#fff' }}>
+      <div style={{ background: "#fff" }}>
         <Helmet title={siteTitle} />
         <Hero data={author.node} />
         <div className="wrapper">
@@ -22,16 +25,16 @@ class RootIndex extends React.Component {
                 <li key={node.slug}>
                   <ArticlePreview article={node} />
                 </li>
-              )
+              );
             })}
           </ul>
         </div>
       </div>
-    )
+    );
   }
 }
 
-export default RootIndex
+export default RootIndex;
 
 export const pageQuery = graphql`
   query HomeQuery {
@@ -44,7 +47,7 @@ export const pageQuery = graphql`
           tags
           heroImage {
             sizes(maxWidth: 350, maxHeight: 196, resizingBehavior: SCALE) {
-             ...GatsbyContentfulSizes_withWebp
+              ...GatsbyContentfulSizes_withWebp
             }
           }
           description {
@@ -55,7 +58,7 @@ export const pageQuery = graphql`
         }
       }
     }
-    allContentfulPerson(filter: { id: { eq: "c15jwOBqpxqSAOy2eOO4S0m" } }) {
+    allContentfulPerson {
       edges {
         node {
           name
@@ -77,4 +80,4 @@ export const pageQuery = graphql`
       }
     }
   }
-`
+`;
